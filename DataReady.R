@@ -22,13 +22,14 @@ urls <- c(
 
 # corresponding list of sheet numbers
 sheets <- c(3, 2)
+#provider_sheets <- c()
 
 # corresponding list of dataset names
 names <- c("data_08_09", "data_09_10")
 
+# corresponding list of dataset names for the provider lists
+provider_names <- c("provider_list_08_09", "provider_list_09_10")
 #==============================================================================
-
-# Reading the files and necessary sheets
 for(i in seq_along(urls)) {
   # download the file into temporary file
   temp <- tempfile(fileext = ".xls")
@@ -36,12 +37,29 @@ for(i in seq_along(urls)) {
   
   # read the specified sheet of the excel file into a dataframe
   df <- read_excel(temp, sheet = sheets[i])
+  
+  # rename the first column to "ID"
+  colnames(df)[1] <- "ID"
+  
   # assign the dataframe to a variable with the specified name
   assign(names[i], df, envir = .GlobalEnv)
+  
+  # read the "SHA and Provider List" sheet into a dataframe
+  provider_df <- read_excel(temp, sheet = "SHA and Provider List")
+  
+  # take only the first two columns
+  provider_df <- provider_df[, 1:2]
+  
+  # rename the columns
+  colnames(provider_df)[1] <- "ID"
+  colnames(provider_df)[2] <- "Providers"
+  
+  # assign the provider dataframe to a variable with the specified name
+  assign(provider_names[i], provider_df, envir = .GlobalEnv)
 }
 
 #==============================================================================
-# Deleting the empty completely rows
+# Deleting the completely empty rows
 
 for(name in names) {
   # get the dataframe from the name
@@ -55,6 +73,21 @@ for(name in names) {
   
   rm(df) #removing local dataframe from environment for space
 }
+
+
+# Deleting the completely empty rows from provider list
+
+for(name in provider_names) {
+  # get the dataframe from the name
+  df <- get(name)
+  
+  # remove NA values
+  df <- na.omit(df)
+  
+  # assign the result back to the original dataframe
+  assign(name, df, envir = .GlobalEnv)
+}
+
 #==============================================================================
 
 # adding availability column in dataframes
@@ -79,10 +112,27 @@ for(name in names) {
 }
 
 #==============================================================================
+# Converting all character values to numeric and setting "*" = -1
 
+for(name in names) {
+  # get the dataframe from the name
+  df <- get(name)
+  
+  # apply the function to each column of the dataframe, except the first one
+  df[, -1] <- lapply(df[, -1], function(col) {
+    # replace "*" with "-1"
+    col[col == "*"] <- "-1"
+    
+    # convert the column to numeric type
+    as.numeric(col)
+  })
+  
+  # assign the result back to the original dataframe
+  assign(name, df, envir = .GlobalEnv)
+  rm(df) #removing local dataframe from environment for space
+}
 
-
-
+#==============================================================================
 
 
 
