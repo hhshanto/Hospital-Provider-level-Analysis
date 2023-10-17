@@ -5,9 +5,9 @@ library(httr)
 # list of URLs
 urls <- c(
   'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02556/hosp-epis-stat-admi-prov-leve-08-09-tab.xls',
-  'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02567/hosp-epis-stat-admi-prov-leve-09-10-tab.xls'
-  # 'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02570/hosp-epis-stat-admi-prov-leve-10-11-tab.xls',
-  # 'https://files.digital.nhs.uk/publicationimport/pub08xxx/pub08288/hosp-epis-stat-admi-prov-leve-11-12-tab.xls',
+  'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02567/hosp-epis-stat-admi-prov-leve-09-10-tab.xls',
+  'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02570/hosp-epis-stat-admi-prov-leve-10-11-tab.xls',
+  'https://files.digital.nhs.uk/publicationimport/pub08xxx/pub08288/hosp-epis-stat-admi-prov-leve-11-12-tab.xls'
   # 'https://files.digital.nhs.uk/publicationimport/pub12xxx/pub12566/hosp-epis-stat-admi-prov-leve-2012-13-tab.xlsx',
   # 'https://files.digital.nhs.uk/publicationimport/pub16xxx/pub16719/hosp-epis-stat-admi-prov-leve-2013-14-tab.xlsx',
   # 'https://files.digital.nhs.uk/publicationimport/pub19xxx/pub19124/hosp-epis-stat-admi-prov-leve-2014-15-tab.xlsx',
@@ -17,18 +17,18 @@ urls <- c(
   # 'https://files.digital.nhs.uk/AE/2CF944/hosp-epis-stat-admi-prov-leve-2018-19-tab.xlsx',
   # 'https://files.digital.nhs.uk/01/B9F273/hosp-epis-stat-admi-prov-leve-2019-20-tab%20v2.xlsx',
   # 'https://files.digital.nhs.uk/72/1ED61C/hosp-epis-stat-admi-prov-leve-2020-21-tab.xlsx',
-  # 'https://files.digital.nhs.uk/7F/8E93CF/hosp-epis-stat-admi-pla-2021-22.xlsx',
+  # 'https://files.digital.nhs.uk/7F/8E93CF/hosp-epis-stat-admi-pla-2021-22.xlsx'
 )
 
 # corresponding list of sheet numbers
-sheets <- c(3, 2)
+sheets <- c(3,2,2,2)
 #provider_sheets <- c()
 
 # corresponding list of dataset names
-names <- c("data_08_09", "data_09_10")
+names <- c("data_08_09", "data_09_10","data_10_11", "data_11_12")
 
 # corresponding list of dataset names for the provider lists
-provider_names <- c("provider_list_08_09", "provider_list_09_10")
+provider_names <- c("provider_list_08_09", "provider_list_09_10","provider_list_10_11","provider_list_11_12")
 #==============================================================================
 for(i in seq_along(urls)) {
   # download the file into temporary file
@@ -37,7 +37,7 @@ for(i in seq_along(urls)) {
   
   # read the specified sheet of the excel file into a dataframe
   df <- read_excel(temp, sheet = sheets[i])
-  
+  print(paste("sheet number", sheets[i]))
   # rename the first column to "ID"
   colnames(df)[1] <- "ID"
   
@@ -144,11 +144,8 @@ for(i in seq_along(names)) {
   # assign the result back to the original dataframe
   assign(names[i], merged_df, envir = .GlobalEnv)
 }
-
-
-
-
-
+#==============================================================================
+#Bringing the Providers infront of ID column
 
 # loop over the list of dataframe names
 for(i in seq_along(names)) {
@@ -168,10 +165,30 @@ for(i in seq_along(names)) {
   assign(names[i], df, envir = .GlobalEnv)
 }
 
+#==============================================================================
 
+#Changing the column names according the years
 
+# loop over the list of dataframe names
+for(i in seq_along(names)) {
+  # get the dataframe from the name
+  df <- get(names[i])
+  
+  # get the suffix from the dataframe name
+  suffix <- gsub("data", "", names[i])
+  
+  # get the column names
+  cols <- colnames(df)
+  
+  # append the suffix to each column name, except for the first one
+  cols[-1] <- paste0(cols[-1], suffix)
+  
+  # assign the new column names to the dataframe
+  colnames(df) <- cols
+  
+  # assign the result back to the original dataframe
+  assign(names[i], df, envir = .GlobalEnv)
+}
 
-
-
-
+#==============================================================================
 
