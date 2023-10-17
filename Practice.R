@@ -5,7 +5,7 @@ library(httr)
 # list of URLs
 urls <- c(
   'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02556/hosp-epis-stat-admi-prov-leve-08-09-tab.xls',
-  'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02567/hosp-epis-stat-admi-prov-leve-09-10-tab.xls'
+  'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02567/hosp-epis-stat-admi-prov-leve-09-10-tab.xls',
   # 'https://files.digital.nhs.uk/publicationimport/pub02xxx/pub02570/hosp-epis-stat-admi-prov-leve-10-11-tab.xls',
   # 'https://files.digital.nhs.uk/publicationimport/pub08xxx/pub08288/hosp-epis-stat-admi-prov-leve-11-12-tab.xls',
   # 'https://files.digital.nhs.uk/publicationimport/pub12xxx/pub12566/hosp-epis-stat-admi-prov-leve-2012-13-tab.xlsx',
@@ -38,4 +38,10 @@ for(i in seq_along(urls)) {
   # assign the dataframe to a variable with the specified name
   assign(names[i], df, envir = .GlobalEnv)
 }
-data_08_09
+
+data_08_09 <- na.omit(data_08_09, cols = 1)
+data_09_10 <- na.omit(data_09_10, cols = 1)
+
+
+
+
