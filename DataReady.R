@@ -96,14 +96,8 @@ for(name in names) {
   # get the dataframe from the name
   df <- get(name)
   
-  # extract the last part of the name
-  suffix <- gsub("data_", "", name)
-  
-  # create the new column name
-  new_col_name <- paste0("availability_", suffix)
-  
   # add the new column to the dataframe
-  df[[new_col_name]] <- "1"
+  df["Availability"] <- 1
   
   # assign the result back to the original dataframe
   assign(name, df, envir = .GlobalEnv)
@@ -112,7 +106,7 @@ for(name in names) {
 }
 
 #==============================================================================
-# Converting all character values to numeric and setting "*" = -1
+# Converting all character values to numeric and setting "*" = NA
 
 for(name in names) {
   # get the dataframe from the name
@@ -120,8 +114,8 @@ for(name in names) {
   
   # apply the function to each column of the dataframe, except the first one
   df[, -1] <- lapply(df[, -1], function(col) {
-    # replace "*" with "-1"
-    col[col == "*"] <- "-1"
+    # replace "*" with "NA"
+    col[col == "*"] <- NA
     
     # convert the column to numeric type
     as.numeric(col)
@@ -133,19 +127,46 @@ for(name in names) {
 }
 
 #==============================================================================
+# Adding the providers column inmain dataframe.
+# loop over the list of dataframe names
+for(i in seq_along(names)) {
+  # get the dataframes from the names
+  df <- get(names[i])
+  provider_df <- get(provider_names[i])
+  
+  # merge the dataframes on the "ID" column
+  merged_df <- merge(df, provider_df, by = "ID", all.x = TRUE)
+  
+  # reorder the columns
+  cols <- c("ID", setdiff(names(merged_df), "ID"))
+  merged_df <- merged_df[, cols]
+  
+  # assign the result back to the original dataframe
+  assign(names[i], merged_df, envir = .GlobalEnv)
+}
 
 
 
 
 
 
-
-
-
-
-
-
-
+# loop over the list of dataframe names
+for(i in seq_along(names)) {
+  # get the dataframe from the name
+  df <- get(names[i])
+  
+  # get the column names
+  cols <- colnames(df)
+  
+  # create a new order for the columns
+  new_order <- c(cols[1], cols[length(cols)], cols[2:(length(cols)-1)])
+  
+  # reorder the columns
+  df <- df[, new_order]
+  
+  # assign the result back to the original dataframe
+  assign(names[i], df, envir = .GlobalEnv)
+}
 
 
 
