@@ -28,7 +28,7 @@ names <- c("data_08_09", "data_09_10")
 
 #==============================================================================
 
-# loop over the lists
+# Reading the files and necessary sheets
 for(i in seq_along(urls)) {
   # download the file into temporary file
   temp <- tempfile(fileext = ".xls")
@@ -41,7 +41,8 @@ for(i in seq_along(urls)) {
 }
 
 #==============================================================================
-# loop over the list
+# Deleting the empty completely rows
+
 for(name in names) {
   # get the dataframe from the name
   df <- get(name)
@@ -51,9 +52,55 @@ for(name in names) {
   
   # assign the result back to the original dataframe
   assign(name, df, envir = .GlobalEnv)
+  
+  rm(df) #removing local dataframe from environment for space
 }
-rm(df,df2)
 #==============================================================================
-data_08_09
-aaaa
+
+# adding availability column in dataframes
+
+for(name in names) {
+  # get the dataframe from the name
+  df <- get(name)
+  
+  # extract the last part of the name
+  suffix <- gsub("data_", "", name)
+  
+  # create the new column name
+  new_col_name <- paste0("availability_", suffix)
+  
+  # add the new column to the dataframe
+  df[[new_col_name]] <- "1"
+  
+  # assign the result back to the original dataframe
+  assign(name, df, envir = .GlobalEnv)
+  
+  rm(df) #removing local dataframe from environment for space
+}
+
+#==============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
