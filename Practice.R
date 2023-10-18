@@ -21,7 +21,7 @@ urls <- c(
 )
 
 # corresponding list of sheet numbers
-sheets <- c(3,2,3,2,3,2,3,3,4,11,11,10,11,11)
+sheets <- c(3,2,3,2,3,2,3,3,4,13,13,12,14,15)
 #provider_sheets <- c()
 
 # corresponding list of dataset names
@@ -69,8 +69,12 @@ for(i in seq_along(urls)) {
   download.file(urls[i], temp, mode = "wb")
   
   # read the specified sheet of the excel file into a dataframe
-  df <- read_excel(temp, sheet = sheets[i])
-  print(paste("sheet number", sheets[i]))
+  if (i >= 11) {
+    df <- read_excel(temp, sheet = sheets[i], skip = 1)
+  } else {
+    df <- read_excel(temp, sheet = sheets[i])
+  }
+
   # rename the first column to "ID"
   colnames(df)[1] <- "ID"
   
@@ -124,7 +128,6 @@ for(name in provider_names) {
 }
 
 #==============================================================================
-
 # adding availability column in dataframes
 
 for(name in names) {
@@ -137,7 +140,7 @@ for(name in names) {
   # assign the result back to the original dataframe
   assign(name, df, envir = .GlobalEnv)
   
-  rm(df) #removing local dataframe from environment for space
+
 }
 
 #==============================================================================
@@ -158,12 +161,11 @@ for(name in names) {
   
   # assign the result back to the original dataframe
   assign(name, df, envir = .GlobalEnv)
-  rm(df) #removing local dataframe from environment for space
 }
 
 #==============================================================================
-# Adding the providers column inmain dataframe.
-# loop over the list of dataframe names
+# Adding the providers column in main dataframe.
+
 for(i in seq_along(names)) {
   # get the dataframes from the names
   df <- get(names[i])
@@ -178,6 +180,7 @@ for(i in seq_along(names)) {
   
   # assign the result back to the original dataframe
   assign(names[i], merged_df, envir = .GlobalEnv)
+
 }
 #==============================================================================
 #Bringing the Providers infront of ID column
@@ -226,4 +229,7 @@ for(i in seq_along(names)) {
 }
 
 #==============================================================================
+rm(merged_df)
+rm(df)
+rm(provider_df)
 
