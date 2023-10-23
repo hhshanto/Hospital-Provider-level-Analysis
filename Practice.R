@@ -110,7 +110,6 @@ for(name in names) {
   # assign the result back to the original dataframe
   assign(name, df, envir = .GlobalEnv)
   
-  rm(df) #removing local dataframe from environment for space
 }
 
 
@@ -229,6 +228,12 @@ for(i in seq_along(names)) {
 }
 
 #==============================================================================
+
+
+#==============================================================================
+
+
+
 rm(merged_df)
 rm(df)
 rm(provider_df)

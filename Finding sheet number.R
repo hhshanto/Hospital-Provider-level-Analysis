@@ -47,6 +47,5 @@ for(i in seq_along(urls)) {
     print(paste("Sheet number: ", j, ", Sheet name: ", sheets[j]))
   }
   
-  # rest of your code...
 }
 
