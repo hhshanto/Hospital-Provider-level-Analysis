@@ -1,5 +1,5 @@
 # Hospital-Provider-level-Analysis
-##  for the final Output of the merged data:
+##  For the final Output of the merged data:
 * 1. Run the DataReady.R file
 * 2. Run the DataMerge.R file
  
