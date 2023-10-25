@@ -2,7 +2,7 @@
 ##  For the final Output of the merged data:
 * 1. Run the DataReady.R file
 * 2. Run the DataMerge.R file
- 
+ Then the `MergedData.xlsx` in the `MergedData` folder is the final merged dataset.
 
 ## Description of ther folder
 * DataReady folder contains all the preprocessed files that are ready to be merged
