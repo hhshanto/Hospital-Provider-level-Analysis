@@ -10,10 +10,10 @@
 * "`Provider level analysis`" folder contains all the original datasets downloaded from nhs websites
 
 ## Description of ther files
-* `DataReady.R` file is the file with final codes codes that is used to preproccesed the data to be ready to be merged
+* `DataReady.R` file contains the final code that is used to preproccesed the data to make it ready for the merge
 * `DataReadyPractice.R` is for trying out different ways to find the effective solution and after finalizing, the code is transfered to DataReady.R file.
 * `DataMerge.R file` is consists of final code for the merge of the datasets
-* `DataMergePractice.R` is same as DataReadyPractice.R.
+* `DataMergePractice.R` is same as DataReadyPractice.R but for the merge code.
 * `Finding sheet number.R` file is to find all the sheets, hidded or visible, in the original files.
 
 
