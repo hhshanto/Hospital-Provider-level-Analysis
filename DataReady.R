@@ -228,7 +228,17 @@ for(i in seq_along(names)) {
 }
 
 #==============================================================================
+# Exporting the ready datasets to DataReady folder to be merged
 
+library(openxlsx)
+
+for (name in names) {
+  df <- get(name)
+
+  file_path <- paste0("DataReady/", name, ".xlsx")
+
+  write.xlsx(df, file_path)
+}
 
 #==============================================================================
 
