@@ -4,10 +4,16 @@
 * 2. Run the DataMerge.R file
  
 
+## Description of ther folder
+* DataReady folder contains all the preprocessed files that are ready to be merged
+* MergedData folder contains the final merged dataset contains all the datasets
+* "Provider level analysis" folder contains all the original datasets downloaded from nhs websites
+
 ## Description of ther files
-* In the MergedData folder you will find the final merged data consisting all of the datasets
-* The DataReady file is the file with final codes. 
-* The practice file is for trying out different ways to find the effective solution after finalizing the code is transfered to DataReady file.
-* So, run the DataReady file to check the final output and codes.
+* DataReady.R file is the file with final codes codes that is used to preproccesed the data to be ready to be merged
+* DataReadyPractice.R is for trying out different ways to find the effective solution and after finalizing, the code is transfered to DataReady.R file.
+* DataMerge.R file is consists of final code for the merge of the datasets
+* DataMergePractice.R is same as DataReadyPractice.R.
+* Finding sheet number.R file is to find all the sheets, hidded or visible, in the original files.
 
 
