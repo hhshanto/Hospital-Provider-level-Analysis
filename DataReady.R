@@ -74,6 +74,9 @@ for(i in seq_along(urls)) {
   } else {
     df <- read_excel(temp, sheet = sheets[i])
   }
+  # Replace dots in column names with underscores
+  names(df) <- gsub(" ", "_", names(df))
+  
   
   # rename the first column to "ID"
   colnames(df)[1] <- "ID"

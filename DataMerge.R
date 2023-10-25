@@ -43,7 +43,7 @@ for (i in 2:length(names)) {
 #==============================================================================
 # Exporting the final merged data
 library(openxlsx)
-write.xlsx(merged_df, "MergedData/merged_df.xlsx")
+write.xlsx(merged_df, "MergedData/MergedData.xlsx")
 
 
 
